@@ -1,29 +1,28 @@
-const alertGreenModal = {
-  alertModalActivate: (err, callback) => {
+//successModal
+const successModal = {
+  activate: (message, callback) => {
     const modal = document.querySelector('.modal');
     modal.classList.add('is-active');
-    modal.innerHTML = alertGreenModal.render(err);
-    alertGreenModal.componentDidMount(callback);
+    modal.innerHTML = successModal.render(message);
+    successModal.componentDidMount(callback);
     return true;
   },
   componentDidMount: (callback) => {
     const modal = document.querySelector('.modal');
     const closeButton1 = document.querySelector('#closeButton1');
     const closeButton2 = document.querySelector('#closeButton2');
-    closeButton1.addEventListener('click', (e) => {
-      e.preventDefault();
+    closeButton1.addEventListener('click', () => {
+      closeModal();
+    });
+    closeButton2.addEventListener('click', () => {
+      closeModal();
+    });
+    const closeModal = () => {
       modal.classList.remove('is-active');
       if (callback) {
         callback();
       }
-    });
-    closeButton2.addEventListener('click', (e) => {
-      e.preventDefault();
-      modal.classList.remove('is-active');
-      if (callback) {
-        callback();
-      }
-    });
+    };
   },
   render: (message) => {
     return `
@@ -43,7 +42,7 @@ const alertGreenModal = {
     `;
   },
 };
-export default alertGreenModal;
+export default successModal;
 
 // html파일에 body 안에
 // <!--modal-->
@@ -53,12 +52,12 @@ export default alertGreenModal;
 // 추가
 
 // js파일에
-// import alertGreenModal from '/components/alertGreenModal.js';
+// import successModal from '/components/successModal.js';
 
-// alertGreenModal.alertModalActivate;
+// successModal.alertModalActivate;
 
-// alertGreenModal.alertModalActivate(err);
+// successModal.alertModalActivate(err);
 
-// alertGreenModal.alertModalActivate(
+// successModal.alertModalActivate(
 //   `문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${err.message}`
 // );

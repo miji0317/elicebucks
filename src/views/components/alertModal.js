@@ -1,28 +1,27 @@
+//alertModalActivate
 const alertModal = {
-  alertModalActivate: (err, callback) => {
+  handleError: (message, callback) => {
     const modal = document.querySelector('.modal');
     modal.classList.add('is-active');
-    modal.innerHTML = alertModal.render(err);
+    modal.innerHTML = alertModal.render(message);
     alertModal.componentDidMount(callback);
   },
   componentDidMount: (callback) => {
     const modal = document.querySelector('.modal');
     const closeButton1 = document.querySelector('#closeButton1');
     const closeButton2 = document.querySelector('#closeButton2');
-    closeButton1.addEventListener('click', (e) => {
-      e.preventDefault();
+    closeButton1.addEventListener('click', () => {
+      closeModal();
+    });
+    closeButton2.addEventListener('click', () => {
+      closeModal();
+    });
+    const closeModal = () => {
       modal.classList.remove('is-active');
       if (callback) {
         callback();
       }
-    });
-    closeButton2.addEventListener('click', (e) => {
-      e.preventDefault();
-      modal.classList.remove('is-active');
-      if (callback) {
-        callback();
-      }
-    });
+    };
   },
   render: (message) => {
     return `

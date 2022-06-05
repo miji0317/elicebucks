@@ -11,7 +11,7 @@ import ProductEdit from './productEdit.js';
 import categorylist from './categorylist.js';
 import productCreate from './productCreate.js';
 import alertModal from '/components/alertModal.js';
-import alertGreenModal from '/components/alertGreenModal.js';
+import successModal from '/components/successModal.js';
 
 const leftMenuAdmin = document.querySelector('#leftMenuAdmin');
 const headerNavbar1 = document.querySelector('#headerNavbar');
@@ -135,18 +135,13 @@ async function addAllElements() {
           name,
         };
         await Api.patch('/api/category', `${button.id}`, data);
-        alertGreenModal.alertModalActivate(
-          `정상적으로 수정되었습니다.`,
-          function () {
-            window.location.href = '/adminProducts/';
-          }
-        );
+        successModal.activate(`정상적으로 수정되었습니다.`, function () {
+          window.location.href = '/adminProducts/';
+        });
         // 홈 페이지 이동
       } catch (err) {
         console.error(err.stack);
-        alertModal.alertModalActivate(
-          `문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${err.message}`
-        );
+        alertModal.handleError(`${err.message}`);
       }
     });
   });
@@ -175,9 +170,7 @@ async function getProducts() {
     return data;
   } catch (err) {
     console.error(err.stack);
-    alertModal.alertModalActivate(
-      `문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${err.message}`
-    );
+    alertModal.handleError(`${err.message}`);
   }
 }
 
@@ -188,9 +181,7 @@ export async function getCategories() {
     return data;
   } catch (err) {
     console.error(err.stack);
-    alertModal.alertModalActivate(
-      `문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${err.message}`
-    );
+    alertModal.handleError(`${err.message}`);
   }
 }
 
@@ -201,9 +192,7 @@ async function getProduct(id) {
     return data;
   } catch (err) {
     console.error(err.stack);
-    alertModal.alertModalActivate(
-      `문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${err.message}`
-    );
+    alertModal.handleError(`${err.message}`);
   }
 }
 
@@ -215,7 +204,7 @@ async function createCategory(value) {
     };
     const result = await Api.post('/api/category/register', data);
 
-    return alertGreenModal.alertModalActivate(
+    return successModal.activate(
       `정상적으로 카테고리 추가되었습니다.`,
       function () {
         window.location.reload();
@@ -223,12 +212,9 @@ async function createCategory(value) {
     );
   } catch (err) {
     console.error(err.stack);
-    alertModal.alertModalActivate(
-      `문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${err.message}`,
-      function () {
-        window.location.href = `/adminProducts`;
-      }
-    );
+    alertModal.handleError(`${err.message}`, function () {
+      window.location.href = `/adminProducts`;
+    });
   }
 }
 
@@ -239,9 +225,7 @@ async function removeProduct(id) {
     return data;
   } catch (err) {
     console.error(err.stack);
-    alertModal.alertModalActivate(
-      `문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${err.message}`
-    );
+    alertModal.handleError(`${err.message}`);
   }
 }
 
@@ -252,8 +236,6 @@ async function removeCategory(id) {
     return data;
   } catch (err) {
     console.error(err.stack);
-    alertModal.alertModalActivate(
-      `문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${err.message}`
-    );
+    alertModal.handleError(`${err.message}`);
   }
 }

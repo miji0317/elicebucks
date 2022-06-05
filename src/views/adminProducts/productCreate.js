@@ -1,7 +1,7 @@
 import * as Api from '/api.js';
 import { validateProduct } from './../utils/validateForm.js';
 import alertModal from '/components/alertModal.js';
-import alertGreenModal from '/components/alertGreenModal.js';
+import successModal from '/components/successModal.js';
 const productCreate = {
   componentDidMount: async (productCat) => {
     let formData;
@@ -13,13 +13,11 @@ const productCreate = {
     submitButton.addEventListener('click', async (e) => {
       e.preventDefault();
       if (!formData) {
-        return alertModal.alertModalActivate('사진(파일)을 선택해주세요!');
+        return alertModal.handleError('사진(파일)을 선택해주세요!');
       }
       const data = await Api.postImage('/api/product/image', formData);
       if (data.error) {
-        alertModal.alertModalActivate(
-          `문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${data.error}`
-        );
+        alertModal.handleError(`${data.error}`);
       }
 
       const name = document.getElementById('nameInput').value;
@@ -33,7 +31,7 @@ const productCreate = {
       try {
         validateProduct(name, price, description, stock);
       } catch (err) {
-        return alertModal.alertModalActivate(err);
+        return alertModal.handleError(err);
       }
 
       try {
@@ -46,17 +44,12 @@ const productCreate = {
           stock,
         };
         const result = await Api.post('/api/product/register', data);
-        alertGreenModal.alertModalActivate(
-          `정상적으로 제품 추가되었습니다.`,
-          function () {
-            window.location.href = '/adminProducts/';
-          }
-        );
+        successModal.activate(`정상적으로 제품 추가되었습니다.`, function () {
+          window.location.href = '/adminProducts/';
+        });
       } catch (err) {
         console.error(err.stack);
-        alertModal.alertModalActivate(
-          `문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${err.message}`
-        );
+        alertModal.handleError(`${err.message}`);
       }
     });
 

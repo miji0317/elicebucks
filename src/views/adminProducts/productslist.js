@@ -29,9 +29,7 @@ const productlist = {
                 <tr>
                   <td>${product.name}</td>
                   <td>${addCommas(product.price)}</td>
-                  <td class="productImage1">${
-                    product.category?.name ? product.category.name : ''
-                  }</td>
+                  <td class="productImage1">${product.category?.name || ''}</td>
                   <td class="productImage1">
                   <img src ="${
                     product.image

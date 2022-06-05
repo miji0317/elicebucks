@@ -312,7 +312,7 @@ function buyBtnEvent() {
       .innerHTML.replace(/[^0-9]/g, '');
     let products = [];
     if (totalCount === '0') {
-      return alertModal.alertModalActivate('장바구니가 비어있습니다.');
+      return alertModal.handleError('장바구니가 비어있습니다.');
     }
     onRequest.onsuccess = () => {
       const database = onRequest.result;

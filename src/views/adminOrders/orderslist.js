@@ -19,7 +19,7 @@ const orderslist = {
     Array.from(deliveredButton).forEach((button) => {
       button.addEventListener('click', async () => {
         if (button.classList.contains('false')) {
-          alertModal.alertModalActivate('먼저 결제처리 해주세요');
+          alertModal.handleError('결제처리가 되어야 배송처리가 가능합니다.^^');
           return;
         }
         if (!confirm('배송처리 하시겠습니까?')) {

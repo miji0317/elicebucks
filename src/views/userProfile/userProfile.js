@@ -5,26 +5,30 @@ import { validateProfile, validateDeleteUser } from '/utils/validateForm.js';
 import insertCategoryList from '../components/navCategoryList.js';
 import { removeUser } from '../utils/user.js';
 import alertModal from '/components/alertModal.js';
-import alertGreenModal from '/components/alertGreenModal.js';
+import successModal from '/components/successModal.js';
 // 요소(element), input 혹은 상수
-const fullNameInput = document.querySelector('#fullNameInput');
-const emailInput = document.querySelector('#emailInput');
-const passwordInput = document.querySelector('#passwordInput');
+const registerUserForm = document.querySelector('#registerUserForm');
+const fullNameInput = registerUserForm.querySelector('#fullNameInput');
+const emailInput = registerUserForm.querySelector('#emailInput');
+const passwordInput = registerUserForm.querySelector('#passwordInput');
 const userDeletePasswordInput = document.querySelector(
   '#userDeletePasswordInput'
 );
 
-const passwordConfirmInput = document.querySelector('#passwordConfirmInput');
-const submitButton = document.querySelector('#submitButton');
+const passwordConfirmInput = registerUserForm.querySelector(
+  '#passwordConfirmInput'
+);
 const headerNavbar1 = document.querySelector('#headerNavbar');
-const phoneNumber1 = document.querySelector('#phoneNumberInput');
-const curpasswordInput = document.querySelector('#curpasswordInput');
+const phoneNumber1 = registerUserForm.querySelector('#phoneNumberInput');
+const curpasswordInput = registerUserForm.querySelector('#curpasswordInput');
 const loginForm = document.querySelector('#loginForm');
 
-const searchAddressButton = document.querySelector('#searchAddressButton');
-const address1Input = document.querySelector('#address1Input');
-const address2Input = document.querySelector('#address2Input');
-const postalCodeInput = document.querySelector('#postalCodeInput');
+const searchAddressButton = registerUserForm.querySelector(
+  '#searchAddressButton'
+);
+const address1Input = registerUserForm.querySelector('#address1Input');
+const address2Input = registerUserForm.querySelector('#address2Input');
+const postalCodeInput = registerUserForm.querySelector('#postalCodeInput');
 
 //const postalCodeInput = document.querySelector('#postalCode');
 //const searchAddressButton = document.querySelector('#searchAddressButton');
@@ -56,7 +60,7 @@ async function addAllEvents() {
   phoneNumber1.value = result.phoneNumber ? result.phoneNumber : '';
   emailInput.value = result.email;
   fullNameInput.value = result.fullName;
-  submitButton.addEventListener('click', handleSubmit);
+  registerUserForm.addEventListener('submit', handleSubmit);
   loginForm.addEventListener('submit', deleteUser);
   searchAddressButton.addEventListener('click', searchAddress);
 }
@@ -83,7 +87,7 @@ async function handleSubmit(e) {
       passwordConfirm
     );
   } catch (err) {
-    return alertModal.alertModalActivate(err);
+    return alertModal.handleError(err);
   }
 
   // 회원수정 api 요청
@@ -101,18 +105,13 @@ async function handleSubmit(e) {
     const token = result.token;
     // 수정 성공, 토큰을 세션 스토리지에 저장
     localStorage.setItem('token', token);
-    alertGreenModal.alertModalActivate(
-      `정상적으로 수정되었습니다.`,
-      function () {
-        window.location.href = '/';
-      }
-    );
+    successModal.activate(`정상적으로 수정되었습니다.`, function () {
+      window.location.href = '/';
+    });
     // 홈 페이지 이동
   } catch (err) {
     console.error(err.stack);
-    alertModal.alertModalActivate(
-      `문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${err.message}`
-    );
+    alertModal.handleError(`${err.message}`);
   }
 }
 //userRouter.delete('/user/:userId'
@@ -123,7 +122,7 @@ async function deleteUser(e) {
   try {
     validateDeleteUser(password);
   } catch (err) {
-    return alertModal.alertModalActivate(err);
+    return alertModal.handleError(err);
   }
   if (!confirm('정말로 탈퇴하시겠습니까?')) {
     return;
@@ -134,35 +133,27 @@ async function deleteUser(e) {
     const data = { currentPassword: password };
     await Api.delete('/api/user', `${userId}`, data);
     removeUser();
-    alertGreenModal.alertModalActivate(
-      `정상적으로 탈퇴되었습니다.`,
-      function () {
-        window.location.href = '/';
-      }
-    );
+    successModal.activate(`정상적으로 탈퇴되었습니다.`, function () {
+      window.location.href = '/';
+    });
     // 홈 페이지 이동
   } catch (err) {
     console.error(err.stack);
-    alertModal.alertModalActivate(
-      `문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${err.message}`
-    );
+    alertModal.handleError(`${err.message}`);
   }
 }
 
 // 주소 검색부분
-function searchAddress(e) {
-  e.preventDefault();
+function searchAddress() {
   console.log(e);
   new daum.Postcode({
     oncomplete: function (data) {
       let addr = '';
       let extraAddr = '';
 
-      if (data.userSelectedType === 'R') {
-        addr = data.roadAddress;
-      } else {
-        addr = data.jibunAddress;
-      }
+      data.userSelectedType === 'R'
+        ? (addr = data.roadAddress)
+        : (addr = data.jibunAddress);
 
       if (data.userSelectedType === 'R') {
         if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {

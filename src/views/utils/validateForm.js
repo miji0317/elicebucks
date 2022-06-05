@@ -1,11 +1,11 @@
 import { validateEmail } from './../useful-functions.js';
 
-export const validateRegister = (
+export const validateRegister = ({
   fullName,
   email,
   password,
-  passwordConfirm
-) => {
+  passwordConfirm,
+}) => {
   const isFullNameValid = fullName.length >= 2;
   const isEmailValid = validateEmail(email);
   const isPasswordValid = password.length >= 4;

@@ -111,9 +111,7 @@ async function getAllNotices() {
     return data;
   } catch (err) {
     console.error(err.stack);
-    alertModal.alertModalActivate(
-      `문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${err.message}`
-    );
+    alertModal.handleError(`${err.message}`);
   }
 }
 //delete('/:noticeId'
@@ -125,8 +123,6 @@ async function removeNotice(id) {
     await Api.delete('/api/notice', `${id}`);
   } catch (err) {
     console.error(err.stack);
-    alertModal.alertModalActivate(
-      `문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${err.message}`
-    );
+    alertModal.handleError(`${err.message}`);
   }
 }

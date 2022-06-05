@@ -1,7 +1,7 @@
 import * as Api from '/api.js';
 import { validateNotice } from './../utils/validateForm.js';
 import alertModal from '/components/alertModal.js';
-import alertGreenModal from '/components/alertGreenModal.js';
+import successModal from '/components/successModal.js';
 const noticesDetail = {
   componentDidMount: () => {
     //취소 뒤로가기
@@ -22,17 +22,12 @@ const noticesDetail = {
           title: document.querySelector('#titleInput').value,
         };
         await Api.patch('/api/notice', `${notice._id}`, newNotice);
-        alertGreenModal.alertModalActivate(
-          `정상적으로 수정되었습니다.`,
-          function () {
-            window.location.reload();
-          }
-        );
+        successModal.activate(`정상적으로 수정되었습니다.`, function () {
+          window.location.reload();
+        });
       } catch (err) {
         console.error(err.stack);
-        alertModal.alertModalActivate(
-          `문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${err.message}`
-        );
+        alertModal.handleError(`${err.message}`);
       }
     });
   },
@@ -45,7 +40,7 @@ const noticesDetail = {
       try {
         validateNotice(title, content);
       } catch (err) {
-        return alertModal.alertModalActivate(err);
+        return alertModal.handleError(err);
       }
       try {
         const newNotice = {
@@ -54,18 +49,13 @@ const noticesDetail = {
           title,
         };
         await Api.post('/api/notice/register', newNotice);
-        alertGreenModal.alertModalActivate(
-          `정상적으로 등록되었습니다.`,
-          function () {
-            window.location.reload();
-          }
-        );
+        successModal.activate(`정상적으로 등록되었습니다.`, function () {
+          window.location.reload();
+        });
         // 홈 페이지 이동
       } catch (err) {
         console.error(err.stack);
-        alertModal.alertModalActivate(
-          `문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${err.message}`
-        );
+        alertModal.handleError(`${err.message}`);
       }
     });
   },

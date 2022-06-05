@@ -1,6 +1,6 @@
 // 자유롭게 코드를 작성해 보세요.
 import alertModal from './../../components/alertModal.js';
-import alertGreenModal from './../../components/alertGreenModal.js';
+import successModal from './../../components/successModal.js';
 const receiverNameInput = document.querySelector('#receiverName');
 const receiverPhoneNumberInput = document.querySelector('#receiverPhoneNumber');
 const postalCodeInput = document.querySelector('#postalCode');
@@ -60,7 +60,7 @@ async function doCheckout() {
 
   // 입력이 안 되어 있을 시
   if (!receiverName || !receiverPhoneNumber || !postalCode || !address2) {
-    return alertModal.alertModalActivate('배송지 정보를 모두 입력해 주세요.');
+    return alertModal.handleError('배송지 정보를 모두 입력해 주세요.');
   }
 
   // 객체 만듦
@@ -87,8 +87,8 @@ async function doCheckout() {
   });
 
   if (res.status === 201) {
-    alertGreenModal.alertModalActivate('주문에 성공하였습니다!');
+    successModal.activate('주문에 성공하였습니다!');
   } else {
-    alertModal.alertModalActivate('주문에 실패하였습니다...');
+    alertModal.handleError('주문에 실패하였습니다...');
   }
 }

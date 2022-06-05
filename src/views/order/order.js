@@ -4,7 +4,7 @@ import insertCategoryList from '../components/navCategoryList.js';
 import logincheck from './logincheck.js';
 import * as Api from '/api.js';
 import alertModal from '/components/alertModal.js';
-import alertGreenModal from '/components/alertGreenModal.js';
+import successModal from '/components/successModal.js';
 import { addCommas, convertToNumber } from '../useful-functions.js';
 
 logincheck();
@@ -86,11 +86,11 @@ async function doCheckout() {
 
   // 입력이 안 되어 있을 시
   if (!receiverName || !receiverPhoneNumber || !postalCode || !address2) {
-    return alertModal.alertModalActivate('배송지 정보를 모두 입력해 주세요.');
+    return alertModal.handleError('배송지 정보를 모두 입력해 주세요.');
   }
 
   if (regPhone.test(receiverPhoneNumber) === false) {
-    return alertModal.alertModalActivate('전화번호 형식을 확인해주세요.');
+    return alertModal.handleError('전화번호 형식을 확인해주세요.');
   }
 
   let onRequest = indexedDB.open('cart', 1);
@@ -121,15 +121,12 @@ async function doCheckout() {
           .objectStore('carts');
         let clear = carts.clear();
         clear.onsuccess = () => {
-          alertGreenModal.alertModalActivate(
-            '주문에 성공하였습니다!',
-            function () {
-              location.pathname = '/myOrder';
-            }
-          );
+          successModal.activate('주문에 성공하였습니다!', function () {
+            location.pathname = '/myOrder';
+          });
         };
       } else {
-        alertModal.alertModalActivate('주문에 실패하였습니다...');
+        alertModal.handleError('주문에 실패하였습니다...');
       }
     };
   };

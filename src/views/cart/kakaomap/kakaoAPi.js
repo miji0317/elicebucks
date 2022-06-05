@@ -59,7 +59,7 @@ async function doCheckout() {
 
   // 입력이 안 되어 있을 시
   if (!receiverName || !receiverPhoneNumber || !postalCode || !address2) {
-    return alertModal.alertModalActivate('배송지 정보를 모두 입력해 주세요.');
+    return alertModal.handleError('배송지 정보를 모두 입력해 주세요.');
   }
 
   // 객체 만듦
@@ -86,8 +86,8 @@ async function doCheckout() {
   });
 
   if (res.status === 201) {
-    alertModal.alertModalActivate('주문에 성공하였습니다!');
+    alertModal.handleError('주문에 성공하였습니다!');
   } else {
-    alertModal.alertModalActivate('주문에 실패하였습니다...');
+    alertModal.handleError('주문에 실패하였습니다...');
   }
 }
