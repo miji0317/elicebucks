@@ -10,7 +10,10 @@ const ProductEdit = {
       formData = formData1;
     };
     const submitButton = document.querySelector('#submitButton');
-    document.getElementById(`${productCat._id}`).selected = true;
+    if (productCat) {
+      document.getElementById(`${productCat._id}`).selected = true;
+    }
+
     submitButton.addEventListener('click', async (e) => {
       e.preventDefault();
       let image = document.getElementById('imageInput').value;
