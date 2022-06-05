@@ -145,7 +145,6 @@ async function deleteUser(e) {
 
 // 주소 검색부분
 function searchAddress() {
-  console.log(e);
   new daum.Postcode({
     oncomplete: function (data) {
       let addr = '';
