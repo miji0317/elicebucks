@@ -10,7 +10,7 @@
 
 ## 1. 서비스 링크
 
-### http://kdt-sw2-seoul-team14.elicecoding.com/
+### ~~http://kdt-sw2-seoul-team14.elicecoding.com/~~
 
 <br />
 
