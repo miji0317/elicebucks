@@ -1,10 +1,6 @@
 # 쇼핑몰 웹 서비스 ${ELICEBUCKS}
 
-<div>
-
-<img alt="로고" src="https://user-images.githubusercontent.com/73158122/173200239-730bb69b-fd55-46b8-888b-9bb3b839868b.png" width="300px">
-
-</div>
+<img src="https://user-images.githubusercontent.com/73158122/186388279-f8312994-50f4-4d3c-9abb-4b0e444c911b.gif" width="60%" />
 
 <br />
 
